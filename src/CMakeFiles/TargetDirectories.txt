@@ -1,0 +1,3 @@
+/home/pth/opengl/src/CMakeFiles/edit_cache.dir
+/home/pth/opengl/src/CMakeFiles/rebuild_cache.dir
+/home/pth/opengl/src/CMakeFiles/test.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/test.dir/test.o CMakeFiles/test.dir/glad.o  -o test -rdynamic -lglfw3 -lGL -lGLU -lpthread -lX11 -ldl 
