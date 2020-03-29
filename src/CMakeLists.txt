@@ -1,5 +1,8 @@
-project(test)
+project(render)
 
-add_executable(test test.cc glad.c)
-target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
-target_link_libraries(test PRIVATE glfw3 GL GLU pthread X11 dl)
+add_subdirectory(gfx)
+add_subdirectory(sfx)
+
+add_executable(render glad.c Controller.cc render.cc)
+target_include_directories(render PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+target_link_libraries(render PRIVATE sfx gfx glfw GL GLU openal alut pthread X11 dl)
