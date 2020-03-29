@@ -13,6 +13,10 @@ Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
   iModel = std::make_shared<Gfx::DefaultModel>(); 
   iSpeed = 0.1;
   iCamera = std::make_shared<Gfx::Camera>();
+  iPressedKeys.LeftPressed = false;
+  iPressedKeys.RightPressed = false;
+  iPressedKeys.UpPressed = false;
+  iPressedKeys.DownPressed = false;
 }
 
 void Controller::Run()
@@ -32,18 +36,42 @@ void Controller::Run()
 
     iWindowManager->SwapBuffers();
     iWindowManager->ProcessInput();
+    ProcessPressedKeys();
   }
 }
 
 void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
 {
   if (aKey == Key::KEY_ESCAPE && aEvent == KeyEvent::EVENT_PRESS)
-    iWindowManager->TryClose();	  
-  if (aKey == Key::KEY_LEFT && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
+    iWindowManager->TryClose();
+
+  if (aEvent == KeyEvent::EVENT_RELEASE && (aKey == Key::KEY_UP || aKey == Key::KEY_DOWN))
+    iSpeed = 0.1f;
+
+  switch(aKey)
+  {
+    case Key::KEY_LEFT:
+       iPressedKeys.LeftPressed = !(aEvent == KeyEvent::EVENT_RELEASE);
+       break;
+    case Key::KEY_RIGHT:
+       iPressedKeys.RightPressed = !(aEvent == KeyEvent::EVENT_RELEASE);
+       break;
+    case Key::KEY_UP:
+       iPressedKeys.UpPressed = !(aEvent == KeyEvent::EVENT_RELEASE);
+       break;
+    case Key::KEY_DOWN:
+       iPressedKeys.DownPressed = !(aEvent == KeyEvent::EVENT_RELEASE);
+       break;
+  }
+}
+
+void Controller::ProcessPressedKeys() 
+{
+  if (iPressedKeys.LeftPressed)
     iCamera->Rotate(2.0f);
-  if (aKey == Key::KEY_RIGHT && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
+  if (iPressedKeys.RightPressed)
     iCamera->Rotate(-2.0f);
-  if (aKey == Key::KEY_UP && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT)) 
+  if (iPressedKeys.UpPressed) 
   {
     Gfx::Camera newCamera(*iCamera);
     newCamera.Translate(iSpeed);
@@ -51,6 +79,8 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     {
       iCamera->Translate(iSpeed);
       iSpeed = 1.2*iSpeed;
+      if (iSpeed > 0.5f)
+	 iSpeed = 0.5f;
     }
     else if (iSpeed > 0.1f)
     {
@@ -58,7 +88,7 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
       iSoundManager->PlayEffect("../resources/sfx/bump.wav");
     }
   }
-  if (aKey == Key::KEY_DOWN && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
+  if (iPressedKeys.DownPressed)
   {
     Gfx::Camera newCamera(*iCamera);
     newCamera.Translate(-iSpeed);
@@ -66,6 +96,8 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     {
       iCamera->Translate(-iSpeed);
       iSpeed = 1.2*iSpeed;
+      if (iSpeed > 0.5f)
+        iSpeed = 0.5f;	      
     }
     else if (iSpeed > 0.1f) 
     {
@@ -73,11 +105,6 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
       iSoundManager->PlayEffect("../resources/sfx/bump.wav");
     }
   }
-
-  if ((aKey == Key::KEY_DOWN || aKey == Key::KEY_UP) && aEvent == KeyEvent::EVENT_RELEASE)
-  {
-    iSpeed = 0.1f;
-  } 
 }
 
 }

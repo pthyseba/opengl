@@ -31,8 +31,17 @@ class Controller
       EVENT_REPEAT
     };
 
+    struct PressedKeys 
+    {
+      bool UpPressed;
+      bool DownPressed;
+      bool LeftPressed;
+      bool RightPressed;
+    };
+
     void ProcessKey(Key aKey, KeyEvent aKeyEvent);
   private:
+    void ProcessPressedKeys();
     std::shared_ptr<Sfx::SoundManager> iSoundManager;
     std::shared_ptr<Gfx::WindowManager> iWindowManager;
     std::shared_ptr<Gfx::Shader> iShader;
@@ -42,6 +51,7 @@ class Controller
     float iSpeed;
     unsigned int iScreenWidth;
     unsigned int iScreenHeight;
+    PressedKeys iPressedKeys;
 };
 
 }
