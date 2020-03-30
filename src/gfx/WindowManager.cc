@@ -71,6 +71,9 @@ void WindowManager::key_callback(GLFWwindow* aWindow, int aKey, int aScancode, i
     case GLFW_KEY_RIGHT:
       key = App::Controller::Key::KEY_RIGHT;
       break;
+    case GLFW_KEY_SPACE:
+      key = App::Controller::Key::KEY_SPACE;
+      break;
   }
   App::Controller::KeyEvent event;
   switch(aAction)

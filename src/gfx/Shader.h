@@ -26,6 +26,11 @@ class Shader
       glUniform1f(glGetUniformLocation(iShaderProgram, aVariable.c_str()), aValue);
     }
 
+    void SetVec3(const std::string& aVariable, float aX, float aY, float aZ)
+    {
+      glUniform3f(glGetUniformLocation(iShaderProgram, aVariable.c_str()), aX, aY, aZ);
+    }
+
     template<typename taType>
     void SetMatrix(const std::string& aMatrixName, const taType& aMatrix)
     {
@@ -39,11 +44,9 @@ class Shader
       "layout (location = 1) in vec2 aTexCoord;\n"
       "uniform mat4 view;\n"
       "uniform mat4 projection;\n"
-      "out vec4 color;\n"
       "out vec2 TexCoord;\n"
       "void main()\n"
       "{\n"
-      "   color = vec4(aPos, 1.0f);\n"
       "   gl_Position = projection*view*vec4(aPos, 1.0f);\n"
       "   TexCoord = aTexCoord;\n"
       "}\0";
@@ -58,15 +61,12 @@ class Shader
       "  sampler2D texture_diffuse1;\n"
       "};\n"
       "uniform Material material;\n"
+      "uniform float dim;\n"
       "out vec4 FragColor;\n"
-      "in vec4 color;\n"
       "in vec2 TexCoord;\n"
-      "uniform sampler2D ourTexture\n;"
       "void main()\n"
       "{\n"
-      "  FragColor = texture(material.texture_diffuse1, TexCoord);\n"
-      "  /* FragColor = vec4(1.0f, abs(gl_FragCoord.z), 0.2f, 1.0f);\n*/"
-      "  /* FragColor = color;\n*/"
+      "  FragColor = dim*texture(material.texture_diffuse1, TexCoord);\n"
       "}\n\0";
 
   private:

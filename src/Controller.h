@@ -2,6 +2,7 @@
 #define APP_CONTROLLER_H
 
 #include "gfx/Camera.h"
+#include "gfx/FontManager.h"
 #include "gfx/Model.h"
 #include "gfx/Shader.h"
 #include "gfx/WindowManager.h"
@@ -23,7 +24,8 @@ class Controller
       KEY_DOWN,
       KEY_LEFT,
       KEY_RIGHT,
-      KEY_ESCAPE
+      KEY_ESCAPE,
+      KEY_SPACE
     };
     enum class KeyEvent {
       EVENT_PRESS,
@@ -46,9 +48,11 @@ class Controller
     std::shared_ptr<Gfx::WindowManager> iWindowManager;
     std::shared_ptr<Gfx::Shader> iShader;
     std::shared_ptr<Gfx::Model> iModel;
+    std::shared_ptr<Gfx::FontManager> iFontManager;
     bool iMenu;
     std::shared_ptr<Gfx::Camera> iCamera;
     float iSpeed;
+    float iDim;
     unsigned int iScreenWidth;
     unsigned int iScreenHeight;
     PressedKeys iPressedKeys;
