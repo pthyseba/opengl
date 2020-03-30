@@ -93,6 +93,8 @@ void SoundManager::PlayEffect(const char* aEffect)
       ALvoid *data;
       ALboolean loop = AL_FALSE;
       alutLoadWAVFile((signed char*)(aEffect), &format, &data, &size, &freq, &loop);
+      // Unbind from source before loading new buffer data!
+      alSourcei(iEffectSources[i], AL_BUFFER,0);
       alBufferData(iEffectBuffers[i], format, data, size, freq);
       alSourcei(iEffectSources[i], AL_BUFFER, iEffectBuffers[i]);
       alSourcePlay(iEffectSources[i]);

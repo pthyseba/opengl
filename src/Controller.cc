@@ -2,6 +2,8 @@
 
 #include "gfx/DefaultModel.h"
 
+#include <sstream>
+
 namespace App {
 
 Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
@@ -40,7 +42,17 @@ void Controller::Run()
     iModel->Draw(*iShader);
 
     if (iMenu)
-      iFontManager->Render("Menu Item 1", 300, 250, 1, {1.0,0,0});
+    {
+      for (size_t i = 0; i < 3; ++i)
+      {
+	std::stringstream s;
+        s << "Menu Item " << i;
+        if (i == iActiveMenuItem)
+          iFontManager->Render("-", 250, 330-50*i, 1, {1.0,1.0,1.0});
+
+        iFontManager->Render(s.str(), 300, 300-50*i, 1, {1.0,0.0,0.0});
+      }
+    }
     iWindowManager->SwapBuffers();
     iWindowManager->ProcessInput();
     ProcessPressedKeys();
@@ -60,6 +72,7 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     if (aEvent == KeyEvent::EVENT_PRESS && aKey == Key::KEY_SPACE)
     {
       iMenu = true;
+      iActiveMenuItem = 0;
       iDim = 0.3f;
     }
     switch(aKey)
@@ -85,6 +98,20 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     {
       iMenu = false; 
       iDim = 1.0f;
+    }
+    if (aKey == Key::KEY_DOWN && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
+    { 
+      size_t oldActiveMenuItem = iActiveMenuItem;
+      iActiveMenuItem = (iActiveMenuItem < 2 ? (iActiveMenuItem + 1) % 3 : 2);
+      if (oldActiveMenuItem != iActiveMenuItem)
+        iSoundManager->PlayEffect("../resources/sfx/menu.wav");
+    }
+    if (aKey == Key::KEY_UP && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
+    {
+      size_t oldActiveMenuItem = iActiveMenuItem;	    
+      iActiveMenuItem = (iActiveMenuItem > 0 ? (iActiveMenuItem-1)%3 : 0);
+      if (oldActiveMenuItem != iActiveMenuItem)
+        iSoundManager->PlayEffect("../resources/sfx/menu.wav");
     }
   }
 }

@@ -50,6 +50,7 @@ class Controller
     std::shared_ptr<Gfx::Model> iModel;
     std::shared_ptr<Gfx::FontManager> iFontManager;
     bool iMenu;
+    size_t iActiveMenuItem;
     std::shared_ptr<Gfx::Camera> iCamera;
     float iSpeed;
     float iDim;

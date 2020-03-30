@@ -2,8 +2,11 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#define STB_IMAGE_STATIC
+#include "stb_image.h"
 
 #include <stdexcept>
+#include <iostream>
 
 namespace Gfx {
 
@@ -31,8 +34,9 @@ FontManager::FontManager(GLuint aScreenWidth, GLuint aScreenHeight)
     "uniform vec3 textColor;\n"
     "void main()\n"
     "{\n"    
-    "vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
-    "color = vec4(textColor, 1.0) * sampled;\n"
+    "if (textColor == vec3(1.0f, 1.0f, 1.0f)) {color = texture(text, TexCoords);}\n"
+    "else { vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
+    "       color = vec4(textColor, 1.0) * sampled;}\n"
     "}\n"
   };
 
@@ -83,6 +87,25 @@ void FontManager::LoadFont(const char* aFont)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int width, height;
+    // Replace '-'
+    if (c == 45) {
+      int nrChannels;
+      unsigned char *skullData = stbi_load("../resources/textures/skull.png", &width, &height, &nrChannels, 0);
+      unsigned int skullTexture;
+      glGenTextures(1, &skullTexture);
+      glBindTexture(GL_TEXTURE_2D, skullTexture);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, skullData);
+      glGenerateMipmap(GL_TEXTURE_2D);
+      stbi_image_free(skullData);
+      texture = skullTexture;
+    };
+ 
     // Now store character for later use
     Character character = {
       texture,
@@ -90,6 +113,13 @@ void FontManager::LoadFont(const char* aFont)
       glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
       face->glyph->advance.x
     };
+
+    if (c == 45)
+    {
+      character.iSize = glm::ivec2(width, height);
+      character.iBearing = glm::ivec2(0,20);
+      character.iAdvance = (width*64)+10;
+    }
     iCharacters.insert(std::pair<GLchar, Character>(c, character));
   }
 
