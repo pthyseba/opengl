@@ -37,6 +37,7 @@ WindowManager::WindowManager(App::Controller* aController, unsigned int aScreenW
   {
     throw std::runtime_error("Failed to initialize GLAD");
   }
+  glEnable(GL_DEPTH_TEST);  
 }
 
 WindowManager::~WindowManager()
@@ -47,7 +48,7 @@ WindowManager::~WindowManager()
 void WindowManager::Clear() 
 {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void WindowManager::key_callback(GLFWwindow* aWindow, int aKey, int aScancode, int aAction, int aMods)

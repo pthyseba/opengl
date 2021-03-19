@@ -22,7 +22,9 @@ class Model
 	mesh.Draw(aShader);
       }
     }
+
   protected:
+    unsigned int CreateTexture(const std::string& aFilename);
     std::vector<Mesh> iMeshes;
 };
 

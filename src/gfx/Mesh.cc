@@ -3,8 +3,8 @@
 
 namespace Gfx {
 
-Mesh::Mesh(const std::vector<Vertex>& aVertices, const std::vector<unsigned int> aIndices, const std::vector<Texture>& aTextures)
-: iVertices(aVertices), iIndices(aIndices), iTextures(aTextures)
+Mesh::Mesh(const std::string& aName, const std::vector<Vertex>& aVertices, const std::vector<unsigned int> aIndices, const std::vector<Texture>& aTextures)
+: iName(aName), iVertices(aVertices), iIndices(aIndices), iTextures(aTextures)
 {
   Setup();
 }

@@ -1,4 +1,5 @@
 #include "DefaultModel.h"
+#include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -67,7 +68,7 @@ void DefaultModel::Load()
     7, 5, 4// front wall triangle 2
   };
 
-  iMeshes.push_back(Mesh(vertices, wallIndices, {Texture{wallTexture, "texture_diffuse"}}));
+  iMeshes.push_back(Mesh(std::string("wall"),vertices, wallIndices, {Texture{wallTexture, "texture_diffuse"}}));
 
   // Ceiling
   std::vector<Vertex> ceilVertices {
@@ -82,7 +83,7 @@ void DefaultModel::Load()
     2, 1, 0 // ceiling second triangle
   };
   
-  iMeshes.push_back(Mesh(ceilVertices, ceilIndices, {Texture{ceilTexture, "texture_diffuse"}}));  
+  iMeshes.push_back(Mesh(std::string("ceiling"),ceilVertices, ceilIndices, {Texture{ceilTexture, "texture_diffuse"}}));  
   
   // Floor
   std::vector<Vertex> floorVertices {
@@ -97,7 +98,7 @@ void DefaultModel::Load()
     2, 3, 0   // floor second triangle
   };
 
-  iMeshes.push_back(Mesh(floorVertices, floorIndices, {Texture{floorTexture, "texture_diffuse"}}));
+  iMeshes.push_back(Mesh(std::string("floor"), floorVertices, floorIndices, {Texture{floorTexture, "texture_diffuse"}}));
 }
 
 bool DefaultModel::InModel(glm::vec3 aPosition)

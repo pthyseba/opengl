@@ -1,7 +1,11 @@
 #include "Controller.h"
 
 #include "gfx/DefaultModel.h"
+#include "gfx/JSONModel.h"
 
+#include <glm/gtx/string_cast.hpp>
+
+#include <iostream>
 #include <sstream>
 
 namespace App {
@@ -12,7 +16,7 @@ Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
   iSoundManager = std::make_shared<Sfx::SoundManager>();
   iWindowManager = std::make_shared<Gfx::WindowManager>(this, aScreenWidth, aScreenHeight, "Demo");
   iShader = std::make_shared<Gfx::Shader>();
-  iModel = std::make_shared<Gfx::DefaultModel>(); 
+  iModel = std::make_shared<Gfx::JSONModel>("../resources/models/samplemodel.json");
   iSpeed = 0.1;
   iCamera = std::make_shared<Gfx::Camera>();
   iFontManager = std::make_shared<Gfx::FontManager>(aScreenWidth, aScreenHeight);
@@ -120,6 +124,7 @@ void Controller::ProcessPressedKeys()
 {
   if (!iMenu)
   {
+    Gfx::Camera currentCam(*iCamera);	  
     if (iPressedKeys.LeftPressed)
       iCamera->Rotate(2.0f);
     if (iPressedKeys.RightPressed)
@@ -157,6 +162,10 @@ void Controller::ProcessPressedKeys()
         iSpeed = 0.1f;
         iSoundManager->PlayEffect("../resources/sfx/bump.wav");
       }
+    }
+    if (iCamera->GetPosition() != currentCam.GetPosition())
+    {
+      std::cout << glm::to_string(iCamera->GetPosition()) << std::endl;
     }
   }
   else
