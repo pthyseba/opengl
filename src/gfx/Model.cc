@@ -24,5 +24,17 @@ unsigned int Model::CreateTexture(const std::string& aFilename)
   return texture;
 }
 
-
+Mesh* Model::GetMesh(const std::string& aName)
+{
+  Mesh* result = nullptr;
+  for (size_t i = 0; i < iMeshes.size(); i++)
+  {
+    if (iMeshes[i].GetName() == aName)
+    {
+      result = &iMeshes[i];
+      break;
+    }	    
+  }
+  return result;
+}
 } // namespace

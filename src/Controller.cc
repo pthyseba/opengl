@@ -17,6 +17,7 @@ Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
   iWindowManager = std::make_shared<Gfx::WindowManager>(this, aScreenWidth, aScreenHeight, "Demo");
   iShader = std::make_shared<Gfx::Shader>();
   iModel = std::make_shared<Gfx::JSONModel>("../resources/models/samplemodel.json");
+  iScriptHost = std::make_shared<Scripting::ScriptHost>(*iModel);
   iSpeed = 0.1;
   iCamera = std::make_shared<Gfx::Camera>();
   iFontManager = std::make_shared<Gfx::FontManager>(aScreenWidth, aScreenHeight);
@@ -36,6 +37,10 @@ void Controller::Run()
   iModel->Load();
   while (!iWindowManager->ShouldClose())
   {
+    // Run scripts
+    iScriptHost->RunScripts();
+
+    // Draw
     iWindowManager->Clear();
 
     iShader->Activate();
@@ -162,10 +167,6 @@ void Controller::ProcessPressedKeys()
         iSpeed = 0.1f;
         iSoundManager->PlayEffect("../resources/sfx/bump.wav");
       }
-    }
-    if (iCamera->GetPosition() != currentCam.GetPosition())
-    {
-      std::cout << glm::to_string(iCamera->GetPosition()) << std::endl;
     }
   }
   else

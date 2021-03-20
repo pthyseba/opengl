@@ -7,7 +7,7 @@
 #include "gfx/Shader.h"
 #include "gfx/WindowManager.h"
 #include "sfx/SoundManager.h"
-
+#include "scripting/ScriptHost.h"
 #include <memory>
 
 namespace App {
@@ -48,6 +48,7 @@ class Controller
     std::shared_ptr<Gfx::WindowManager> iWindowManager;
     std::shared_ptr<Gfx::Shader> iShader;
     std::shared_ptr<Gfx::Model> iModel;
+    std::shared_ptr<Scripting::ScriptHost> iScriptHost;
     std::shared_ptr<Gfx::FontManager> iFontManager;
     bool iMenu;
     size_t iActiveMenuItem;

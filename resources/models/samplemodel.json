@@ -9,6 +9,12 @@
       "z" : [2.01, 2.01, 1.49, 1.49]
     }
   ],
+  "scripts" : [
+    {
+      "name" : "rotatepyramid",
+      "source" : "function run() {RotateY(\"pyramid\", -0.2);}"
+    }
+  ],
   "meshes" : [
     {
        "name" : "pyramid",

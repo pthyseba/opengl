@@ -2,8 +2,9 @@
 #define GFX_MODEL_H
 
 #include "Mesh.h"
+#include "Script.h"
 #include "Shader.h"
-
+#include <string>
 #include <vector>
 
 namespace Gfx {
@@ -23,9 +24,18 @@ class Model
       }
     }
 
+    Mesh* GetMesh(const std::string& aName);
+
+    const std::vector<Script>& GetScripts() const
+    {
+      return iScripts;
+    }
+
+    
   protected:
     unsigned int CreateTexture(const std::string& aFilename);
     std::vector<Mesh> iMeshes;
+    std::vector<Script> iScripts;
 };
 
 }

@@ -60,7 +60,13 @@ void JSONModel::Load()
 	}
 	iExclusionZones.push_back(p);
       }
-    }	    
+    }
+    for(const auto& script : fullModel.at("scripts"))
+    {
+      const std::string name = script.at("name");
+      const std::string source = script.at("source");
+      iScripts.push_back(Script(name, source));    
+    }
     for(const auto& mesh : fullModel.at("meshes"))
     {
       const auto name = mesh.at("name");

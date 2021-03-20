@@ -15,11 +15,13 @@ namespace Gfx {
 	Mesh(const std::string& aName,const std::vector<Vertex>& aVertices, const std::vector<unsigned int> aIndices, const std::vector<Texture>& aTextures);
         ~Mesh();	
 	void Draw(Shader& aShader) const;
-    
-    private:
-	void Setup();
+        std::string GetName() const {return iName;};
+        void RotateY(double aAngle);
 
-        std::string iName;
+    private:
+        void Load();
+
+	std::string iName;
 	std::vector<Vertex> iVertices;
         std::vector<unsigned int> iIndices;
 	std::vector<Texture> iTextures;
