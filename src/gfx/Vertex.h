@@ -7,8 +7,8 @@ namespace Gfx {
   struct Vertex
   {
     glm::vec3 iPosition;
-    //glm::vec3 iNormal;
     glm::vec2 iTexCoords;  
+    glm::vec3 iNormal;
   };
 }
 

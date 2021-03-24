@@ -61,6 +61,12 @@ void JSONModel::Load()
 	iExclusionZones.push_back(p);
       }
     }
+    for(const auto& light : fullModel.at("lights"))
+    {
+      const std::string name = light.at("name");
+      const auto pos = light.at("position").get<std::vector<float>>();	          
+      iLights.insert({name, Light(pos[0], pos[1], pos[2])});
+    } 
     for(const auto& script : fullModel.at("scripts"))
     {
       const std::string name = script.at("name");

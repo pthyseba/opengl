@@ -47,10 +47,6 @@ void Mesh::Draw(Shader& aShader) const
 
 void Mesh::Load()
 {
-  //glGenVertexArrays(1, &iVAO);
-  //glGenBuffers(1, &iVBO);
-  //glGenBuffers(1, &iEBO);
-  
   glBindVertexArray(iVAO);
   glBindBuffer(GL_ARRAY_BUFFER, iVBO);
 
@@ -63,13 +59,13 @@ void Mesh::Load()
   // vertex positions
   glEnableVertexAttribArray(0);	
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-  // vertex normals
-  //glEnableVertexAttribArray(1);	
-  //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, iNormal));
   // vertex texture coords
   glEnableVertexAttribArray(1);	
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, iTexCoords));
-
+  // vertex normals
+  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, iNormal));
+  glEnableVertexAttribArray(2);
+  
   glBindVertexArray(0);
 }
 
@@ -103,9 +99,27 @@ void Mesh::RotateY(double aAngle)
   for (auto& v : iVertices)
   { 
     glm::vec4 origPos = glm::vec4(v.iPosition, 1.0);
+    glm::vec4 origNormal = glm::vec4(v.iNormal, 1.0);
     v.iPosition = glm::vec3(trans + rot*(origPos - trans));
+    v.iNormal = glm::vec3(rot*origNormal);
   }
 
+  Load();
+}
+
+void Mesh::LoadVertexNormals(const TVertexNormalMap& aMap) 
+{
+  for (auto& v : iVertices)
+  {
+    if (aMap.count(v.iPosition) > 0)
+    {
+      v.iNormal = aMap.at(v.iPosition);
+    }
+    else
+    {
+      std::cout << "Vertex " << glm::to_string(v.iPosition) << " does not have a normal??" << std::endl;
+    }
+  }
   Load();
 }
 

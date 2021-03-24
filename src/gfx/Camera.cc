@@ -2,7 +2,8 @@
 
 namespace Gfx {
 
-Camera::Camera()
+Camera::Camera(Model& aModel)
+: iModel(aModel)
 {
   iCameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
   iCameraNormal = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -21,15 +22,15 @@ void Camera::Rotate(float aDegrees)
   iCameraNormal = glm::vec3(rotationMatrix * glm::vec4(iCameraNormal, 1.0f));
 }
 
-void Camera::ConfigureShader(Gfx::Shader& aShader, unsigned int aScreenWidth, unsigned int aScreenHeight)
+void Camera::ConfigureView(unsigned int aScreenWidth, unsigned int aScreenHeight)
 {
   glm::mat4 view =  glm::lookAt(iCameraPos, iCameraPos + iCameraNormal, iCameraUp);
   // note that we're translating the scene in the reverse direction of where we want to move
   // view = glm::translate(view, glm::vec3(0.0f, 0.0f, translate)); 
   glm::mat4 projection;
   projection = glm::perspective(glm::radians(45.0f), (float) aScreenWidth / (float) aScreenHeight, 0.05f, 100.0f);
-  aShader.SetMatrix("projection", projection);
-  aShader.SetMatrix("view", view);
+  iModel.SetProjection(projection);
+  iModel.SetView(view);
 }
 
 glm::vec3 Camera::GetPosition() const

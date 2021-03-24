@@ -7,12 +7,13 @@ namespace Scripting {
 //std::string Script::KTimeStampIdentifier = std::string{"TIME"};
 //std::string Script::KLastRunIdentifier = std::string{"LASTRUN"};                                                  
 
-ScriptHost::ScriptHost(Gfx::Model& aModel)
-  : iModel(aModel)
+ScriptHost::ScriptHost(App::Controller& aController, Gfx::Model& aModel)
+  : iController(aController), iModel(aModel)
 {
   iVM = std::make_unique<squall::VMStd>();
   // Bind functions and make them available to Squirrel scripts
   iVM->defun("RotateY", [=](std::string aMesh, float aAngle){this->RotateY(aMesh, aAngle);});
+  iVM->defun("ToggleLight", [=](std::string aLight){this->ToggleLight(aLight);});
 }
 
 void ScriptHost::RunScripts() const
@@ -31,6 +32,11 @@ void ScriptHost::RotateY(const std::string& aMesh, double angle) const
   {
     m->RotateY(angle);
   }
+}
+
+void ScriptHost::ToggleLight(const std::string& aLight) const
+{
+  iModel.ToggleLight(aLight);
 }
 
 

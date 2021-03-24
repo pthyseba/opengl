@@ -37,7 +37,8 @@ WindowManager::WindowManager(App::Controller* aController, unsigned int aScreenW
   {
     throw std::runtime_error("Failed to initialize GLAD");
   }
-  glEnable(GL_DEPTH_TEST);  
+  glEnable(GL_DEPTH_TEST); 
+  glEnable(GL_CULL_FACE);   
 }
 
 WindowManager::~WindowManager()

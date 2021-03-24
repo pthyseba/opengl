@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 
 namespace App {
 
@@ -15,18 +16,17 @@ Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
 {
   iSoundManager = std::make_shared<Sfx::SoundManager>();
   iWindowManager = std::make_shared<Gfx::WindowManager>(this, aScreenWidth, aScreenHeight, "Demo");
-  iShader = std::make_shared<Gfx::Shader>();
   iModel = std::make_shared<Gfx::JSONModel>("../resources/models/samplemodel.json");
-  iScriptHost = std::make_shared<Scripting::ScriptHost>(*iModel);
+  iScriptHost = std::make_shared<Scripting::ScriptHost>(*this, *iModel);
   iSpeed = 0.1;
-  iCamera = std::make_shared<Gfx::Camera>();
+  iCamera = std::make_shared<Gfx::Camera>(*iModel);
   iFontManager = std::make_shared<Gfx::FontManager>(aScreenWidth, aScreenHeight);
   iPressedKeys.LeftPressed = false;
   iPressedKeys.RightPressed = false;
   iPressedKeys.UpPressed = false;
   iPressedKeys.DownPressed = false;
   iMenu = false;
-  iDim = 1.0f;
+  srand(time(NULL));
 }
 
 void Controller::Run()
@@ -35,20 +35,17 @@ void Controller::Run()
   iSoundManager->StartMusic();
   iFontManager->LoadFont("../resources/fonts/font.ttf");
   iModel->Load();
+  iModel->DumpNormals();
+  iModel->SetDim(1.0f);
   while (!iWindowManager->ShouldClose())
   {
     // Run scripts
-    iScriptHost->RunScripts();
+    //iScriptHost->RunScripts();
 
     // Draw
     iWindowManager->Clear();
-
-    iShader->Activate();
-
-    iShader->SetFloat("dim", iDim);   
-    iCamera->ConfigureShader(*iShader, iScreenWidth, iScreenHeight);
-
-    iModel->Draw(*iShader);
+    iCamera->ConfigureView(iScreenWidth, iScreenHeight);
+    iModel->Draw();
 
     if (iMenu)
     {
@@ -82,7 +79,7 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     {
       iMenu = true;
       iActiveMenuItem = 0;
-      iDim = 0.3f;
+      iModel->SetDim(0.3f);
     }
     switch(aKey)
     {
@@ -106,7 +103,7 @@ void Controller::ProcessKey(Key aKey, KeyEvent aEvent)
     if (aKey == Key::KEY_ESCAPE && aEvent == KeyEvent::EVENT_PRESS)
     {
       iMenu = false; 
-      iDim = 1.0f;
+      iModel->SetDim(1.0f);
     }
     if (aKey == Key::KEY_DOWN && (aEvent == KeyEvent::EVENT_PRESS || aEvent == KeyEvent::EVENT_REPEAT))
     { 

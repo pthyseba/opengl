@@ -46,7 +46,7 @@ class Controller
     void ProcessPressedKeys();
     std::shared_ptr<Sfx::SoundManager> iSoundManager;
     std::shared_ptr<Gfx::WindowManager> iWindowManager;
-    std::shared_ptr<Gfx::Shader> iShader;
+    //std::shared_ptr<Gfx::Shader> iShader;
     std::shared_ptr<Gfx::Model> iModel;
     std::shared_ptr<Scripting::ScriptHost> iScriptHost;
     std::shared_ptr<Gfx::FontManager> iFontManager;
@@ -54,7 +54,7 @@ class Controller
     size_t iActiveMenuItem;
     std::shared_ptr<Gfx::Camera> iCamera;
     float iSpeed;
-    float iDim;
+    //float iDim;
     unsigned int iScreenWidth;
     unsigned int iScreenHeight;
     PressedKeys iPressedKeys;
