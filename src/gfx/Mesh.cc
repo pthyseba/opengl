@@ -24,9 +24,10 @@ void Mesh::Draw(Shader& aShader) const
 {
   unsigned int diffuseTextureNr = 1;
   unsigned int specularTextureNr = 1;
-  for(unsigned int i = 0; i < iTextures.size(); i++)
+  unsigned int i = 0;
+  for(i = 0; i < iTextures.size(); i++)
   {
-    glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+    glActiveTexture(GL_TEXTURE0 + 10+i); // activate proper texture unit before binding, 10 shadow maps reserved
     // retrieve texture number (the N in diffuse_textureN)
     std::string number;
     std::string name = iTextures[i].iType;
@@ -35,11 +36,16 @@ void Mesh::Draw(Shader& aShader) const
     else if(name == "texture_specular")
       number = std::to_string(specularTextureNr++);
 
-    aShader.SetInt(("material." + name + number).c_str(), i);
+    aShader.SetInt(("material." + name + number).c_str(), 10+i);
     glBindTexture(GL_TEXTURE_2D, iTextures[i].iId);
+    //std::cout << "Texture unit " << 10+i << " bound to texture " << iTextures[i].iId << std::endl;
   }
-  glActiveTexture(GL_TEXTURE0);
   // draw mesh
+  PureDraw();
+}
+
+void Mesh::PureDraw() const
+{
   glBindVertexArray(iVAO);
   glDrawElements(GL_TRIANGLES, iIndices.size(), GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);

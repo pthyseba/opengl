@@ -42,11 +42,21 @@ Mesh* Model::GetMesh(const std::string& aName)
   return result;
 }
 
+Light* Model::GetLight(const std::string& aName)
+{
+  Light* result = nullptr;
+  auto it = iLights.find(aName);
+  if (it != iLights.end())
+  {
+    result = &(it->second);
+  }
+  return result;
+}
+
 void Model::DumpNormals()
 {
   Mesh::TFaceNormalMap faceNormals;	
   Mesh::TVertexNormalMap vertexNormals;
-  //std::map<glm::vec3, std::vector<glm::vec3>, vec3Comparator> faceNormals;
   for(size_t i = 0; i < iMeshes.size(); i++)
   {
     const auto& v = iMeshes[i].GetVertices();
@@ -76,7 +86,6 @@ void Model::DumpNormals()
       std::cout << "Vertex " << glm::to_string(it->first) << " : face normal " << glm::to_string(n) << std::endl;	    
       normal = normal + n;
     }
-    //normal = normal / (float) (it->second).size();
     normal=glm::normalize(normal);
     std::cout << "Vertex " << glm::to_string(it->first) << " : vertex normal " << glm::to_string(normal) << std::endl;
     std::cout << std::endl;

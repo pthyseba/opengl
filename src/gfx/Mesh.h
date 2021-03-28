@@ -24,6 +24,7 @@ namespace Gfx {
 	Mesh(const std::string& aName,const std::vector<Vertex>& aVertices, const std::vector<unsigned int> aIndices, const std::vector<Texture>& aTextures);
         ~Mesh();	
 	void Draw(Shader& aShader) const;
+	void PureDraw() const;
         std::string GetName() const {return iName;};
         void RotateY(double aAngle);
         const std::vector<Vertex>& GetVertices() const

@@ -17,7 +17,7 @@ Controller::Controller(unsigned int aScreenWidth, unsigned int aScreenHeight)
   iSoundManager = std::make_shared<Sfx::SoundManager>();
   iWindowManager = std::make_shared<Gfx::WindowManager>(this, aScreenWidth, aScreenHeight, "Demo");
   iModel = std::make_shared<Gfx::JSONModel>("../resources/models/samplemodel.json");
-  iScriptHost = std::make_shared<Scripting::ScriptHost>(*this, *iModel);
+  iScriptHost = std::make_shared<Scripting::ScriptHost>(*iModel);
   iSpeed = 0.1;
   iCamera = std::make_shared<Gfx::Camera>(*iModel);
   iFontManager = std::make_shared<Gfx::FontManager>(aScreenWidth, aScreenHeight);
@@ -40,7 +40,7 @@ void Controller::Run()
   while (!iWindowManager->ShouldClose())
   {
     // Run scripts
-    //iScriptHost->RunScripts();
+    iScriptHost->RunScripts();
 
     // Draw
     iWindowManager->Clear();
@@ -135,16 +135,18 @@ void Controller::ProcessPressedKeys()
     {
       Gfx::Camera newCamera(*iCamera);
       newCamera.Translate(iSpeed);
-      if (iModel->InModel(newCamera.GetPosition()))
+      Gfx::Camera deltaCamera(*iCamera);
+      deltaCamera.Translate(KMinSpeed);
+      if (iModel->InModel(newCamera.GetPosition()) && iModel->InModel(deltaCamera.GetPosition()))
       {
         iCamera->Translate(iSpeed);
         iSpeed = 1.2*iSpeed;
-        if (iSpeed > 0.5f)
-	  iSpeed = 0.5f;
+        if (iSpeed > KMaxSpeed)
+	  iSpeed = KMaxSpeed;
       }
-      else if (iSpeed > 0.1f)
+      else if (iSpeed > KMinSpeed)
       {
-        iSpeed = 0.1f;
+        iSpeed = KMinSpeed;
         iSoundManager->PlayEffect("../resources/sfx/bump.wav");
       }
     }
@@ -152,16 +154,18 @@ void Controller::ProcessPressedKeys()
     {
       Gfx::Camera newCamera(*iCamera);
       newCamera.Translate(-iSpeed);
-      if (iModel->InModel(newCamera.GetPosition())) 
+      Gfx::Camera deltaCamera(*iCamera);
+      deltaCamera.Translate(-KMinSpeed);
+      if (iModel->InModel(newCamera.GetPosition()) && iModel->InModel(deltaCamera.GetPosition())) 
       {
         iCamera->Translate(-iSpeed);
         iSpeed = 1.2*iSpeed;
-        if (iSpeed > 0.5f)
-          iSpeed = 0.5f;	      
+        if (iSpeed > KMaxSpeed)
+          iSpeed = KMaxSpeed;	      
       }
-      else if (iSpeed > 0.1f) 
+      else if (iSpeed > KMinSpeed) 
       {
-        iSpeed = 0.1f;
+        iSpeed = KMinSpeed;
         iSoundManager->PlayEffect("../resources/sfx/bump.wav");
       }
     }
@@ -172,4 +176,6 @@ void Controller::ProcessPressedKeys()
   }
 }
 
+const double Controller::KMinSpeed = 0.01;
+const double Controller::KMaxSpeed = 0.3;
 }

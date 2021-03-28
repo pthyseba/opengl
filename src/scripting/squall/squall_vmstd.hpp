@@ -6,6 +6,12 @@
 #include <sqstdio.h>
 #include <sqstdaux.h>
 
+#include <sqstdmath.h>
+#include <sqstdblob.h>
+#include <sqstdio.h>
+#include <sqstdstring.h>
+#include <sqstdsystem.h>
+
 #include "squall_vm.hpp"
 #include <stdarg.h>
 
@@ -40,6 +46,11 @@ public:
     VMStd(int stack_size = 1024) : VM(stack_size) {
         sqstd_seterrorhandlers(handle());
         sq_setprintfunc(handle(), &detail::pf<SQChar>, &detail::pf<SQChar>);
+        sqstd_register_mathlib(handle());
+	sqstd_register_iolib(handle());
+        sqstd_register_bloblib(handle());
+        sqstd_register_systemlib(handle());
+        sqstd_register_stringlib(handle());
     }
 
     void dofile(const SQChar* filename) {

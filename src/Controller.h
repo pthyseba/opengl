@@ -58,6 +58,9 @@ class Controller
     unsigned int iScreenWidth;
     unsigned int iScreenHeight;
     PressedKeys iPressedKeys;
+ 
+    static const double KMinSpeed;
+    static const double KMaxSpeed;
 };
 
 }

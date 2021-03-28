@@ -64,8 +64,12 @@ void JSONModel::Load()
     for(const auto& light : fullModel.at("lights"))
     {
       const std::string name = light.at("name");
-      const auto pos = light.at("position").get<std::vector<float>>();	          
-      iLights.insert({name, Light(pos[0], pos[1], pos[2])});
+      const auto pos = light.at("position").get<std::vector<float>>();
+      const auto color = light.at("color").get<std::vector<float>>();
+      const auto att = light.at("attenuation").get<std::vector<float>>();
+      const auto intensity = light.at("intensity").get<float>();      
+      
+      iLights.insert({name, Light(pos[0], pos[1], pos[2], color[0], color[1], color[2], intensity, att[0], att[1], att[2])});
     } 
     for(const auto& script : fullModel.at("scripts"))
     {
