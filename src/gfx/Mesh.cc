@@ -97,7 +97,7 @@ void Mesh::RotateY(double aAngle)
   centroidz = centroidz / (double) iVertices.size();
  
   // Translation
-  glm::vec4 trans = glm::vec4(glm::vec3(centroidx, centroidy, centroidz), 1.0);
+  glm::vec4 trans = glm::vec4(glm::vec3(centroidx, centroidy, centroidz), 0.0);
   // Rotation matrix
   glm::mat4 rot = glm::mat4(1.0f);
   rot = glm::rotate(rot, (float) aAngle, glm::vec3(0.0f, 1.0f, 0.0f));
