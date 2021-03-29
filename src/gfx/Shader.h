@@ -116,7 +116,7 @@ class Shader
       "}\n"
       "void main()\n"
       "{\n"
-      "  float ambient = 0.1f;\n"
+      "  float ambient = 0.001f;\n"
       "  vec3 textureColor = texture(material.texture_diffuse1, TexCoord).xyz;\n"
       "  vec3 result = ambient*textureColor;\n"
       "  for(int i = 0; i < nrPointLights; i++){\n"

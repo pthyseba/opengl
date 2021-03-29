@@ -30,13 +30,6 @@
       "color" : [1.0, 1.0, 1.0],
       "intensity" : 1.0,
       "attenuation" : [1.0, 0.09, 0.32]
-    },
-    {
-      "name" : "secondlight",
-      "position" : [0.0, 1.0, 0.0],
-      "color" : [1.0, 1.0, 1.0],
-      "intensity" : 1.0,
-      "attenuation" : [1.0, 0.09, 0.32]
     }
   ],
   "meshes" : [
