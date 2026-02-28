@@ -61,7 +61,7 @@
        "textures" : [
          {
            "type" : "texture_diffuse",
-           "path" : "/sources/opengl/resources/textures/brick.jpg"
+           "path" : "../resources/textures/brick.jpg"
 	 }
        ]
     },
@@ -89,7 +89,7 @@
       "textures" : [
         {
           "type" : "texture_diffuse",
-	  "path" : "/sources/opengl/resources/textures/brick-wall-dark.jpg" 
+	  "path" : "../resources/textures/brick-wall-dark.jpg" 
 	}
       ]
     },
@@ -117,7 +117,7 @@
       "textures" : [
         {
           "type" : "texture_diffuse",
-	  "path" : "/sources/opengl/resources/textures/night-sky.jpg" 
+	  "path" : "../resources/textures/night-sky.jpg" 
 	}
       ]
     },
@@ -161,7 +161,7 @@
       "textures" : [
         {
           "type" : "texture_diffuse",
-          "path" : "/sources/opengl/resources/textures/dark-grungy-wall-texture-background.jpg"
+          "path" : "../resources/textures/dark-grungy-wall-texture-background.jpg"
         }
       ]
     }

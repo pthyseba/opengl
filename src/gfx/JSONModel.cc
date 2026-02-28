@@ -2,7 +2,7 @@
 #include <cmath>
 #include <fstream>
 #include "JSONModel.h"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 #include <sstream>
 #include <vector>
 

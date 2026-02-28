@@ -1,5 +1,5 @@
 #include "SoundManager.h"
-
+#include <cstddef>
 #include <AL/alut.h>
 
 namespace Sfx {
